@@ -1,0 +1,51 @@
+<html lang="en" dir="ltr">
+
+    <head>
+        <meta charset="utf-8">
+        <title>practice</title>
+    </head>
+
+<body>
+
+    <p>숫자 세기: <output id="result"></output></p>
+
+    <button onclick="startWorker()">Worker 시작</button>
+
+    <button onclick="stopWorker()">Worker 중단</button>
+
+
+    <script type="text/javascript" src="num_count.js"></script>
+    <script>
+
+        var w;
+        function startWorker() {
+
+            console.log('hiasd');
+
+            if (typeof (Worker) !== "undefined") { // Web Worker 지원여부 체크
+
+                if (typeof (w) == "undefined") {
+
+                    w = new Worker("num_count.js"); // Web Worker 객체 생성
+
+                }
+                w.onmessage = function (event) { // 서버에서 메세지수신 이벤트 발생하면
+
+                    document.getElementById("result").innerHTML = event.data;
+
+                };
+            } else {
+                document.getElementById("result").innerHTML = "Web Workers 지원 않는 브라우저는 개나 줘버려.";
+            }
+        }
+
+        function stopWorker() {
+            console.log('stop');
+            w.terminate(); // Web Worker 제거
+            w = undefined; // Web Worker 제거 후, 코드 재사용 목적
+        }
+
+    </script>
+</body>
+
+</html>
